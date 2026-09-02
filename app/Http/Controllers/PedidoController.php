@@ -33,7 +33,7 @@ class PedidoController extends Controller
             ->paginate(15);
 
         $pedidos->getCollection()->transform(function ($pedido) use ($clienteId) {
-            $pedido->qtd_boletos = $this->contarBoletosVinculados($clienteId, $pedido->data_pedido);
+            $pedido->qtd_boletos = $this->contarBoletosVinculados($clienteId, $pedido->data_pedido); 
 
             return $pedido;
         });
