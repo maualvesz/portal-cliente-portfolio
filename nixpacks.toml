@@ -1,0 +1,16 @@
+# Configuração de build para o Railway (builder Nixpacks).
+# Doc: https://nixpacks.com/docs/deploying/railway
+
+[phases.build]
+cmds = [
+  "composer install --no-dev --optimize-autoloader --no-interaction",
+  "npm install",
+  "npm run build"
+]
+
+[start]
+# 1) garante que o arquivo SQLite existe (o repositório não versiona o banco)
+# 2) roda migrations + seed (idempotente o suficiente para um projeto de demonstração —
+#    a cada novo deploy/restart os dados fictícios são recriados)
+# 3) sobe o servidor embutido do PHP na porta que o Railway injeta em $PORT
+cmd = "mkdir -p database && touch database/database.sqlite && php artisan migrate --seed --force && php artisan serve --host 0.0.0.0 --port $PORT"
